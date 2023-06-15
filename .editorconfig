@@ -16,3 +16,8 @@ indent_size = 2
 
 [docker-compose.yml]
 indent_size = 4
+
+#教材3.3节统一代码风格 添加↓ 没深究这些是啥意思
+[*.{js,html,blade.php,css,scss,vue}]
+indent_style = space
+indent_size = 2
