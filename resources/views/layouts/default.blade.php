@@ -23,12 +23,17 @@
 
     <div class="container">
       <div class="offset-md-1 col-md-10">
+
+        @include('parts._messages')
+
         @yield('content')
 
         @include('layouts._footer')
       </div>
     </div>
 
+
+    <script src="{{ mix('js/app.js') }}"></script>  <!-- 这行不加的话，加载到resources/js/app.js里的代码就不会生效  -->
   </body>
 
 </html>

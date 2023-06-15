@@ -28,10 +28,28 @@ Route::get('/about', 'StaticPagesController@about')->name('about');
 
 
 //教材4.7节 正式开始做用户注册页面 以及连带的控制器、模型等功能
-Route::get('/signup', 'UsersController@signup')->name('signup');    //@后面的方法原本写的create，我想在这次做教材的时候把方法名改成我直观理解的
+Route::get('/signup', 'UsersController@signup')->name('signup');    
+//@后面的方法原本写的create，我想在这次做教材的时候把方法名改成我直观理解的。页面中出现{{ route('name') }}其实就是根据name获得URL路径，同时去找对应的控制器里的那个@函数
 
 
+Route::resource('users', 'UsersController');
+/*上面这行等价于下面
+Route::get('/users/{user}', 'UsersController@show')->name('users.show');
+Route::post('/users', 'UsersController@store')->name('users.store');
 
 
+Route::get('/users', 'UsersController@index')->name('users.index');
+Route::get('/users/create', 'UsersController@create')->name('users.create');
+Route::get('/users/{user}/edit', 'UsersController@edit')->name('users.edit');
+Route::patch('/users/{user}', 'UsersController@update')->name('users.update');
+Route::delete('/users/{user}', 'UsersController@destroy')->name('users.destroy');
+*/
 
+
+//因为指定的路径一样，比如都是/login，所以name就一样了，只是在同一个URL路径对应的控制器里用了两种函数，分别对应的是显示页面和实现提交功能
+//但是也可以是不同的name指向同一个URL，你看上面的index方法和store方法，为什么他们是指向同一个URL的呢？
+// 控制器内的方法函数名被我修改了
+Route::get('/login', 'SessionsController@login_page')->name('login');
+Route::post('/login', 'SessionsController@login_verify')->name('login');
+Route::delete('/logout', 'SessionsController@user_logout')->name('logout');
 
