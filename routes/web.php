@@ -30,6 +30,9 @@ Route::get('/about', 'StaticPagesController@about')->name('about');
 //教材4.7节 正式开始做用户注册页面 以及连带的控制器、模型等功能
 Route::get('/signup', 'UsersController@signup')->name('signup');    
 //@后面的方法原本写的create，我想在这次做教材的时候把方法名改成我直观理解的。页面中出现{{ route('name') }}其实就是根据name获得URL路径，同时去找对应的控制器里的那个@函数
+Route::get('/signup/confirm/{token}', 'UsersController@confirm_email')->name('confirm_email');
+// ↑↑这是教材9.2节激活账户，用来发送激活码邮件
+
 
 
 Route::resource('users', 'UsersController');
@@ -37,12 +40,12 @@ Route::resource('users', 'UsersController');
 Route::get('/users/{user}', 'UsersController@show')->name('users.show');
 Route::post('/users', 'UsersController@store')->name('users.store');
 
-
-Route::get('/users', 'UsersController@index')->name('users.index');
-Route::get('/users/create', 'UsersController@create')->name('users.create');
 Route::get('/users/{user}/edit', 'UsersController@edit')->name('users.edit');
 Route::patch('/users/{user}', 'UsersController@update')->name('users.update');
+Route::get('/users', 'UsersController@index')->name('users.index');
+
 Route::delete('/users/{user}', 'UsersController@destroy')->name('users.destroy');
+Route::get('/users/create', 'UsersController@create')->name('users.create');    //这个没用到，我感觉这个就是signup，你如果不写signup就直接用这个create就好了
 */
 
 
@@ -52,4 +55,15 @@ Route::delete('/users/{user}', 'UsersController@destroy')->name('users.destroy')
 Route::get('/login', 'SessionsController@login_page')->name('login');
 Route::post('/login', 'SessionsController@login_verify')->name('login');
 Route::delete('/logout', 'SessionsController@user_logout')->name('logout');
+
+
+
+//密码重置第一步：点击忘记密码超链接后，会去到 请求重置密码的页面（该页面是要你填写你的注册邮箱，填写好之后要点击“重置”按钮让网站来发送验证身份的邮件给你，此时网站会校验这个邮箱是否注册过，通过校验的话邮件会发送）
+Route::get('/password-reset-request',  'PasswordController@password_reset_request')->name('password_reset_request');
+// 密码重置第二步：控制器要完成发送邮件的动作
+Route::post('/password-reset-email',  'PasswordController@password_reset_email')->name('password_reset_email');
+// 密码重置第三步：对方把邮件中的验证码输入回浏览器之后，通过校验就要跳到重置密码的页面，此时用户输入自己重置的密码
+Route::get('/password-reset/{token}',  'PasswordController@password_reset_token')->name('password_reset_token');
+// 密码重置第四步：用户提交重置的密码时，控制器要完成这个重置的动作
+Route::post('/password-reset',  'PasswordController@password_reset')->name('password_reset');
 

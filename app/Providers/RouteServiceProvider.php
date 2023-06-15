@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
+    public const HOME = '/';    //这里还要结合教材8.3节
 
     //我们还需要前往路由的服务提供者类app/Providers/RouteServiceProvider.php中设置命名空间 → 否则会报错说找不到C控制器类，这是一次性的动作
     //同时要到下方的第40行后面插入这个namespace
