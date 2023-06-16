@@ -154,4 +154,20 @@ class UsersController extends Controller
     }
 
 
+    //教材11.4 关注的人和被哪些粉丝关注的页面 ———— 我有点没看懂的是，两个功能可以做在同一个页面：followings方法的视图是××××× ，followers方法的视图也是×××××
+    //★★★也就是说在某种条件下，路由URL路径可以是不一样，要完成的功能也可以不一样，但指向的视图文件可以是同一个。自己看下下面两段和相关视图文件里的代码
+    public function followings(User $user)
+    {
+        $users = $user->followings()->paginate(10);
+        $title = $user->name . '关注的人';
+        return view('users.show_fans_or_followings', compact('users', 'title'));
+    }
+
+    public function followers(User $user)
+    {
+        $users = $user->followers()->paginate(10);
+        $title = $user->name . '的粉丝';
+        return view('users.show_fans_or_followings', compact('users', 'title'));
+    }
+
 }

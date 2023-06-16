@@ -59,6 +59,7 @@ Route::delete('/logout', 'SessionsController@user_logout')->name('logout');
 
 
 
+//第9章
 //密码重置第一步：点击忘记密码超链接后，会去到 请求重置密码的页面（该页面是要你填写你的注册邮箱，填写好之后要点击“重置”按钮让网站来发送验证身份的邮件给你，此时网站会校验这个邮箱是否注册过，通过校验的话邮件会发送）
 Route::get('/password-reset-request',  'PasswordController@password_reset_request')->name('password_reset_request');
 // 密码重置第二步：控制器要完成发送邮件的动作
@@ -70,6 +71,7 @@ Route::post('/password-reset',  'PasswordController@password_reset')->name('pass
 
 
 
+//第10章
 Route::resource('microblogs', 'MicroblogsController');    //['only' => ['store', 'destroy']]    //教材中指定了only创建2个方法，但我去掉了，目的是查看整个路由列表
 // 我不想要store和destroy来命名方法，但好像你只要用resource来做路由，它内置的默认的方法名就是这些
 /*
@@ -83,4 +85,12 @@ DELETE          	microblogs/{microblog} 		    microblogs.destroy › MicroblogsC
 GET|HEAD        	microblogs/{microblog}/edit 	microblogs.edit › MicroblogsController@edit
 所以教材都会使用store、create、destroy等方法名 */
 
+
+
+//第11章
+Route::get('/users/{user}/followings', 'UsersController@followings')->name('users.followings');
+Route::get('/users/{user}/followers', 'UsersController@followers')->name('users.followers');
+// 注意：虽然都是在11章，但是上面用来显示粉丝列表用的是UsersController，下面用来做关注和取消关注按钮用的是FollowersController
+Route::post('/users/followers/{user}', 'FollowersController@store')->name('followers.store');
+Route::delete('/users/followers/{user}', 'FollowersController@destroy')->name('followers.destroy');
 

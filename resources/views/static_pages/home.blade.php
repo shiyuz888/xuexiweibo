@@ -15,11 +15,17 @@
         @include('parts._microblog_feed')
       </div>
 
+      <!-- 边栏 -->
       <aside class="col-md-4">
         <section class="user_info">
           @include('parts._user_info', ['user' => Auth::user()])
         </section>
+
+        <section class="stats mt-2">
+          @include('parts._fans_stats', ['user' => Auth::user()])
+        </section>
       </aside>
+
     </div>
 
 @else

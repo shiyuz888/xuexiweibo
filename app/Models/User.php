@@ -74,7 +74,7 @@ class User extends Authenticatable
 
         
 
-
+    //微博
     public function microblogs()
     {
         return $this->hasMany(Microblog::class);
@@ -83,7 +83,51 @@ class User extends Authenticatable
 
     public function feed()
     {
+        /*优化前的feed流，只能在首页显示自己发的微博列表
         return $this->microblogs()
                     ->orderBy('created_at', 'desc');
+        */
+
+        //优化后可以显示自己以及自己关注的人的微博，并按时间降序排列
+        $user_ids = $this->followings->pluck('id')->toArray();
+        array_push($user_ids, $this->id);
+        return Microblog::whereIn('user_id', $user_ids)
+                              ->with('user')
+                              ->orderBy('created_at', 'desc');
     }
+
+
+
+    //关注、被关注
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'user_id', 'follower_id');
+    }
+
+    public function followings()
+    {
+        return $this->belongsToMany(User::class, 'followers', 'follower_id', 'user_id');
+    }
+
+    public function follow($user_ids)
+    {
+        if ( ! is_array($user_ids)) {
+            $user_ids = compact('user_ids');
+        }
+        $this->followings()->sync($user_ids, false);
+    }
+
+    public function unfollow($user_ids)
+    {
+        if ( ! is_array($user_ids)) {
+            $user_ids = compact('user_ids');
+        }
+        $this->followings()->detach($user_ids);
+    }
+
+    public function isFollowing($user_id)
+    {
+        return $this->followings->contains($user_id);
+    }
+
 }
