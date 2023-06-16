@@ -45,6 +45,7 @@ Route::patch('/users/{user}', 'UsersController@update')->name('users.update');
 Route::get('/users', 'UsersController@index')->name('users.index');
 
 Route::delete('/users/{user}', 'UsersController@destroy')->name('users.destroy');
+
 Route::get('/users/create', 'UsersController@create')->name('users.create');    //这个没用到，我感觉这个就是signup，你如果不写signup就直接用这个create就好了
 */
 
@@ -66,4 +67,20 @@ Route::post('/password-reset-email',  'PasswordController@password_reset_email')
 Route::get('/password-reset/{token}',  'PasswordController@password_reset_token')->name('password_reset_token');
 // 密码重置第四步：用户提交重置的密码时，控制器要完成这个重置的动作
 Route::post('/password-reset',  'PasswordController@password_reset')->name('password_reset');
+
+
+
+Route::resource('microblogs', 'MicroblogsController');    //['only' => ['store', 'destroy']]    //教材中指定了only创建2个方法，但我去掉了，目的是查看整个路由列表
+// 我不想要store和destroy来命名方法，但好像你只要用resource来做路由，它内置的默认的方法名就是这些
+/*
+比如，你用php artisan route:list来看路由列表（前提是你把控制器都创建好），得到如下
+GET|HEAD        	microblogs 			            microblogs.index › MicroblogsController@index
+POST            	microblogs 			            microblogs.store › MicroblogsController@store
+GET|HEAD        	microblogs/create 			    microblogs.create › MicroblogsController@create
+GET|HEAD        	microblogs/{microblog} 		    microblogs.show › MicroblogsController@show
+PUT|PATCH       	microblogs/{microblog} 		    microblogs.update › MicroblogsController@update
+DELETE          	microblogs/{microblog} 		    microblogs.destroy › MicroblogsController@destroy
+GET|HEAD        	microblogs/{microblog}/edit 	microblogs.edit › MicroblogsController@edit
+所以教材都会使用store、create、destroy等方法名 */
+
 

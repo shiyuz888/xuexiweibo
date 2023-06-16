@@ -73,4 +73,17 @@ class User extends Authenticatable
     }
 
         
+
+
+    public function microblogs()
+    {
+        return $this->hasMany(Microblog::class);
+    }
+
+
+    public function feed()
+    {
+        return $this->microblogs()
+                    ->orderBy('created_at', 'desc');
+    }
 }

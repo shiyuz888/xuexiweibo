@@ -9,6 +9,25 @@
         <section class="user_info">
           @include('parts._user_info', ['user' => $user])
         </section>
+
+
+
+        <section class="microblog">
+            @if ($microblogs->count() > 0)
+              <ul class="list-unstyled">
+                @foreach ($microblogs as $microblog)
+                  @include('parts._microblog')
+                @endforeach
+              </ul>
+
+              <div class="mt-5">
+                {!! $microblogs->render() !!}
+              </div>
+            @else
+              <p>没有数据！</p>
+            @endif
+        </section>
+
       </div>
     </div>
   </div>
